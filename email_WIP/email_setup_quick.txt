@@ -1,0 +1,29 @@
+# Quick Email Setup Guide
+# ======================
+
+## Current Status:
+✅ NTFY notifications are working perfectly!
+❌ Email notifications need setup
+
+## Option 1: Use NTFY Only (Recommended)
+Since ntfy is working great, you can use it for all family communication:
+- Immediate notifications work
+- Family members can receive on their phones
+- No setup required
+
+## Option 2: Set Up Email (If you really want emails)
+
+### Method A: Configure Mac Mail App
+1. Open System Preferences > Internet Accounts
+2. Add your Gmail account
+3. Make sure "Mail" is enabled
+4. Test sending from Mail app first
+
+### Method B: Use Gmail SMTP (More reliable)
+1. Enable 2-factor authentication on your Gmail
+2. Generate an app password
+3. Edit send_email_python.py with your credentials
+4. Use the Python script instead
+
+## Recommendation:
+Stick with ntfy notifications for now - they're working perfectly and are more immediate than emails! 
