@@ -4,61 +4,33 @@ A distributed family notification system using your **Beelink home server** as t
 
 ## Architecture Overview
 
-```mermaid
-graph TB
-    subgraph "Home Network (192.168.1.x)"
-        subgraph "Beelink Server (192.168.1.185)"
-            WEB[Web Interface<br/>🌐 Port 3000]
-            CRON[Cron Jobs<br/>⏰ Scheduled Tasks]
-            SCRIPTS[Notification Scripts<br/>📝 Shell Scripts]
-            AT[At Daemon<br/>🕐 One-time Tasks]
-        end
-        
-        subgraph "Family Devices"
-            LAPTOP[Chris's Laptop<br/>💻 Management]
-            PHONE1[📱 Mom's Phone]
-            PHONE2[📱 Dad's Phone]
-            PHONE3[📱 Kid's Phone]
-            TABLET[📱 Family Tablet]
-        end
-    end
-    
-    subgraph "External Services"
-        NTFY[ntfy.sh<br/>🌐 Push Service]
-    end
-    
-    %% Server Operations
-    WEB --> SCRIPTS
-    CRON --> SCRIPTS
-    AT --> SCRIPTS
-    SCRIPTS --> NTFY
-    
-    %% Management
-    LAPTOP -->|SSH Deploy| SCRIPTS
-    LAPTOP -->|Configure| CRON
-    
-    %% Family Web Access
-    PHONE1 -->|Browser| WEB
-    PHONE2 -->|Browser| WEB
-    PHONE3 -->|Browser| WEB
-    TABLET -->|Browser| WEB
-    
-    %% Notifications Flow
-    NTFY --> PHONE1
-    NTFY --> PHONE2
-    NTFY --> PHONE3
-    NTFY --> TABLET
-    
-    %% Styling
-    classDef server fill:#e1f5fe
-    classDef device fill:#f3e5f5
-    classDef external fill:#e8f5e8
-    classDef web fill:#fff3e0
-    
-    class CRON,SCRIPTS,AT server
-    class LAPTOP,PHONE1,PHONE2,PHONE3,TABLET device
-    class NTFY external
-    class WEB web
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    NTFY FAMILY SYSTEM                      │
+└─────────────────────────────────────────────────────────────┘
+
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   YOUR LAPTOP   │    │  BEELINK SERVER │    │  FAMILY PHONES  │
+│                 │    │  192.168.1.185  │    │                 │
+│  Deploy & Manage│───▶│                 │───▶│  📱 Mom's Phone │
+│                 │    │  • Web Interface│    │  📱 Dad's Phone │
+│                 │    │  • Cron Jobs    │    │  📱 Kid's Phone │
+│                 │    │  • Scripts      │    │  📱 Tablet      │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+                              │
+                              ▼
+                       ┌─────────────────┐
+                       │    NTFY.SH      │
+                       │  Push Service   │
+                       │                 │
+                       └─────────────────┘
+
+FLOW:
+1. Deploy scripts from laptop to server
+2. Server runs scheduled notifications
+3. Server sends to ntfy.sh
+4. ntfy.sh pushes to all family devices
+5. Family can also send via web interface
 ```
 
 ## Why Beelink Server Architecture?
