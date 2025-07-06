@@ -14,8 +14,8 @@ ssh -l $USER $SERVER "mkdir -p $REMOTE_DIR $REMOTE_DIR/web"
 echo "📁 Copying scripts..."
 scp *.sh $USER@$SERVER:$REMOTE_DIR/
 
-# Copy README
-scp README.md $USER@$SERVER:$REMOTE_DIR/
+# Copy README from parent directory
+scp ../README.md $USER@$SERVER:$REMOTE_DIR/
 
 # Copy web interface files
 echo "🌐 Copying web interface..."

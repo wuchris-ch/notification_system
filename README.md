@@ -83,9 +83,17 @@ graph TB
 
 ## Quick Start
 
+**🚀 New to the project? Run the interactive helper:**
+```bash
+./quick-start.sh
+```
+
+**Or follow the manual steps below:**
+
 ### 1. Server Setup (One-time)
 ```bash
 # Deploy to beelink server
+cd ntfy-core/
 ./deploy_to_beelink.sh
 
 # SSH to server and setup
@@ -126,22 +134,22 @@ cd web
 
 ## Server Components
 
-### 🖥️ **Beelink Server Scripts**
-- `family_reminders.sh` - Interactive menu for all functions
-- `send_notification.sh` - Send immediate notifications  
-- `quick_reminder.sh` - Schedule one-time reminders
-- `add_cron_reminder.sh` - Set up recurring reminders
+### 🖥️ **Beelink Server Scripts** (in [`ntfy-core/`](ntfy-core/))
+- [`family_reminders.sh`](ntfy-core/family_reminders.sh) - Interactive menu for all functions
+- [`send_notification.sh`](ntfy-core/send_notification.sh) - Send immediate notifications
+- [`quick_reminder.sh`](ntfy-core/quick_reminder.sh) - Schedule one-time reminders
+- [`add_cron_reminder.sh`](ntfy-core/add_cron_reminder.sh) - Set up recurring reminders
 
-### 🚀 **Deployment Scripts**
-- `deploy_to_beelink.sh` - Deploy system to server
-- `server_setup.sh` - Configure server dependencies
-- `disable_cli_mode.sh` - Create non-interactive versions
+### 🚀 **Deployment Scripts** (in [`ntfy-core/`](ntfy-core/))
+- [`deploy_to_beelink.sh`](ntfy-core/deploy_to_beelink.sh) - Deploy system to server
+- [`server_setup.sh`](ntfy-core/server_setup.sh) - Configure server dependencies
+- [`disable_cli_mode.sh`](ntfy-core/disable_cli_mode.sh) - Create non-interactive versions
 
-### 🌐 **Web Interface**
-- `web/index.html` - Beautiful responsive web interface
-- `web/server.py` - Python web server with API endpoints
-- `web/start_web_server.sh` - Manual server startup
-- `web/install_web_service.sh` - Install as systemd service
+### 🌐 **Web Interface** (in [`ntfy-core/web/`](ntfy-core/web/))
+- [`web/index.html`](ntfy-core/web/index.html) - Beautiful responsive web interface
+- [`web/server.py`](ntfy-core/web/server.py) - Python web server with API endpoints
+- [`web/start_web_server.sh`](ntfy-core/web/start_web_server.sh) - Manual server startup
+- [`web/install_web_service.sh`](ntfy-core/web/install_web_service.sh) - Install as systemd service
 
 ## Usage Patterns
 
@@ -150,7 +158,7 @@ cd web
 # SSH to server first
 ssh -l chris 192.168.1.185
 
-# Then run commands on server
+# Then run commands on server (deployed from ntfy-core/)
 ./send_notification.sh "Dinner's ready! 🍽️"
 ./family_reminders.sh
 ./add_cron_reminder.sh
@@ -158,7 +166,8 @@ ssh -l chris 192.168.1.185
 
 ### 💻 **Remote Management** (From Laptop)
 ```bash
-# Deploy updates
+# Deploy updates from ntfy-core directory
+cd ntfy-core/
 ./deploy_to_beelink.sh
 
 # Quick remote notification
@@ -209,16 +218,17 @@ ssh -l chris 192.168.1.185 "cd /home/chris/ntfy-family && ./send_notification.sh
 - Manual notification sending from multiple devices
 
 ## Advanced Usage
-
 ### 🔧 **Non-Interactive Mode** (For Automation)
 ```bash
-# Run disable_cli_mode.sh to create silent versions
+# Run disable_cli_mode.sh to create silent versions (from ntfy-core/)
+cd ntfy-core/
 ./disable_cli_mode.sh
 
-# Then use automated scripts
+# Then use automated scripts (on server after deployment)
 ./send_notification_silent.sh "Automated message"
 ./quick_reminder_auto.sh "Doctor visit" "2025-07-15 14:30" 60
 ./add_cron_auto.sh "Daily medicine" "0 8 * * *"
+```
 ```
 
 ### 🌐 **Web Interface Features**
@@ -244,9 +254,45 @@ Easy to integrate with:
 - Smart home devices
 - Voice assistants
 
-## Email (Work in Progress)
+## Project Organization
 
-Email functionality is in the `email_WIP/` folder for future development.
+This project is now organized into two main components:
+
+### 🔔 **ntfy-core/** - Basic NTFY Functionality
+Core notification system using ntfy.sh for reliable push notifications:
+- [`send_notification.sh`](ntfy-core/send_notification.sh) - Send immediate notifications
+- [`quick_reminder.sh`](ntfy-core/quick_reminder.sh) - Schedule one-time reminders
+- [`add_cron_reminder.sh`](ntfy-core/add_cron_reminder.sh) - Set up recurring reminders
+- [`family_reminders.sh`](ntfy-core/family_reminders.sh) - Interactive menu for all functions
+- [`server_setup.sh`](ntfy-core/server_setup.sh) - Configure server dependencies
+- [`deploy_to_beelink.sh`](ntfy-core/deploy_to_beelink.sh) - Deploy system to server
+- [`disable_cli_mode.sh`](ntfy-core/disable_cli_mode.sh) - Create non-interactive versions
+- [`web/`](ntfy-core/web/) - Web interface for family members
+- [`DEPLOYMENT_STEPS.md`](ntfy-core/DEPLOYMENT_STEPS.md) - Step-by-step deployment guide
+- [`server_usage_guide.md`](ntfy-core/server_usage_guide.md) - Server usage instructions
+
+### 📧 **email-notifications/** - Email Functionality
+Gmail API-based email notifications for additional delivery options:
+- [`gmail_api_send.py`](email-notifications/gmail_api_send.py) - Single email sender using Gmail API
+- [`family_gmail_notify.py`](email-notifications/family_gmail_notify.py) - Family email notifications
+- [`send_dual_notification.sh`](email-notifications/send_dual_notification.sh) - Combined NTFY + Gmail notifications
+- [`setup_gmail_notifications.sh`](email-notifications/setup_gmail_notifications.sh) - Automated setup script
+- [`GMAIL_API_SETUP_GUIDE.md`](email-notifications/GMAIL_API_SETUP_GUIDE.md) - Complete Gmail API setup instructions
+- [`GMAIL_QUICK_REFERENCE.md`](email-notifications/GMAIL_QUICK_REFERENCE.md) - Quick reference for email commands
+
+## Getting Started
+
+### For Basic NTFY Notifications (Recommended)
+```bash
+cd ntfy-core/
+./deploy_to_beelink.sh
+```
+
+### For Email Notifications (Optional)
+```bash
+cd email-notifications/
+./setup_gmail_notifications.sh
+```
 
 ## Contributing
 
