@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Family Notifications</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 1.1em;
+            color: #666;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            color: #4facfe;
+            border-bottom: 3px solid #4facfe;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #4facfe;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: transform 0.2s;
+            width: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .quick-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .quick-btn {
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .quick-btn:hover {
+            border-color: #4facfe;
+            transform: translateY(-2px);
+        }
+        
+        .quick-btn .emoji {
+            font-size: 2em;
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        .datetime-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        @media (max-width: 600px) {
+            .datetime-group {
+                grid-template-columns: 1fr;
+            }
+            
+            .quick-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏠 Family Notifications</h1>
+            <p>Send messages to all family devices instantly</p>
+        </div>
+        
+        <div class="content">
+            <div class="tabs">
+                <button class="tab active" onclick="showTab('instant')">📱 Send Now</button>
+                <button class="tab" onclick="showTab('reminder')">⏰ Schedule Reminder</button>
+                <button class="tab" onclick="showTab('recurring')">🔄 Recurring</button>
+            </div>
+            
+            <!-- Instant Notification Tab -->
+            <div id="instant" class="tab-content active">
+                <div class="quick-buttons">
+                    <div class="quick-btn" onclick="quickMessage('🍽️ Dinner is ready!')">
+                        <span class="emoji">🍽️</span>
+                        Dinner Ready
+                    </div>
+                    <div class="quick-btn" onclick="quickMessage('🚗 Leaving in 5 minutes!')">
+                        <span class="emoji">🚗</span>
+                        Leaving Soon
+                    </div>
+                    <div class="quick-btn" onclick="quickMessage('📞 Please call home')">
+                        <span class="emoji">📞</span>
+                        Call Home
+                    </div>
+                    <div class="quick-btn" onclick="quickMessage('🏠 I\'m home!')">
+                        <span class="emoji">🏠</span>
+                        I'm Home
+                    </div>
+                </div>
+                
+                <form id="instantForm">
+                    <div class="form-group">
+                        <label for="instantMessage">Your Message</label>
+                        <textarea id="instantMessage" placeholder="Type your message here..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn">📱 Send Notification Now</button>
+                </form>
+                <div id="instantStatus" class="status"></div>
+            </div>
+            
+            <!-- Reminder Tab -->
+            <div id="reminder" class="tab-content">
+                <form id="reminderForm">
+                    <div class="form-group">
+                        <label for="reminderMessage">Reminder Message</label>
+                        <textarea id="reminderMessage" placeholder="e.g., Doctor appointment" required></textarea>
+                    </div>
+                    <div class="datetime-group">
+                        <div class="form-group">
+                            <label for="reminderDate">Date</label>
+                            <input type="date" id="reminderDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reminderTime">Time</label>
+                            <input type="time" id="reminderTime" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="reminderMinutes">Remind me (minutes before)</label>
+                        <select id="reminderMinutes">
+                            <option value="5">5 minutes before</option>
+                            <option value="15">15 minutes before</option>
+                            <option value="30" selected>30 minutes before</option>
+                            <option value="60">1 hour before</option>
+                            <option value="120">2 hours before</option>
+                            <option value="1440">1 day before</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn">⏰ Schedule Reminder</button>
+                </form>
+                <div id="reminderStatus" class="status"></div>
+            </div>
+            
+            <!-- Recurring Tab -->
+            <div id="recurring" class="tab-content">
+                <form id="recurringForm">
+                    <div class="form-group">
+                        <label for="recurringMessage">Recurring Message</label>
+                        <textarea id="recurringMessage" placeholder="e.g., Take morning medication" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="recurringType">Frequency</label>
+                        <select id="recurringType" onchange="updateRecurringOptions()">
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="monthly">Monthly</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="recurringTime">Time</label>
+                        <input type="time" id="recurringTime" required>
+                    </div>
+                    <div id="weeklyOptions" class="form-group" style="display: none;">
+                        <label for="recurringDay">Day of Week</label>
+                        <select id="recurringDay">
+                            <option value="1">Monday</option>
+                            <option value="2">Tuesday</option>
+                            <option value="3">Wednesday</option>
+                            <option value="4">Thursday</option>
+                            <option value="5">Friday</option>
+                            <option value="6">Saturday</option>
+                            <option value="0">Sunday</option>
+                        </select>
+                    </div>
+                    <div id="monthlyOptions" class="form-group" style="display: none;">
+                        <label for="recurringDate">Day of Month</label>
+                        <select id="recurringDate">
+                            <option value="1">1st</option>
+                            <option value="15">15th</option>
+                            <option value="28">28th</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn">🔄 Set Up Recurring Reminder</button>
+                </form>
+                <div id="recurringStatus" class="status"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+        
+        // Quick message buttons
+        function quickMessage(message) {
+            document.getElementById('instantMessage').value = message;
+        }
+        
+        // Update recurring options based on frequency
+        function updateRecurringOptions() {
+            const type = document.getElementById('recurringType').value;
+            const weeklyOptions = document.getElementById('weeklyOptions');
+            const monthlyOptions = document.getElementById('monthlyOptions');
+            
+            weeklyOptions.style.display = type === 'weekly' ? 'block' : 'none';
+            monthlyOptions.style.display = type === 'monthly' ? 'block' : 'none';
+        }
+        
+        // Show status message
+        function showStatus(elementId, message, isError = false) {
+            const statusEl = document.getElementById(elementId);
+            statusEl.textContent = message;
+            statusEl.className = `status ${isError ? 'error' : 'success'}`;
+            statusEl.style.display = 'block';
+            
+            setTimeout(() => {
+                statusEl.style.display = 'none';
+            }, 5000);
+        }
+        
+        // Form submissions
+        document.getElementById('instantForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const message = document.getElementById('instantMessage').value;
+            
+            try {
+                const response = await fetch('/api/send-notification', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message })
+                });
+                
+                if (response.ok) {
+                    showStatus('instantStatus', '✅ Notification sent successfully!');
+                    document.getElementById('instantMessage').value = '';
+                } else {
+                    throw new Error('Failed to send notification');
+                }
+            } catch (error) {
+                showStatus('instantStatus', '❌ Failed to send notification. Please try again.', true);
+            }
+        });
+        
+        document.getElementById('reminderForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const message = document.getElementById('reminderMessage').value;
+            const date = document.getElementById('reminderDate').value;
+            const time = document.getElementById('reminderTime').value;
+            const minutesBefore = document.getElementById('reminderMinutes').value;
+            
+            try {
+                const response = await fetch('/api/schedule-reminder', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message, date, time, minutesBefore })
+                });
+                
+                if (response.ok) {
+                    showStatus('reminderStatus', '⏰ Reminder scheduled successfully!');
+                    document.getElementById('reminderForm').reset();
+                } else {
+                    throw new Error('Failed to schedule reminder');
+                }
+            } catch (error) {
+                showStatus('reminderStatus', '❌ Failed to schedule reminder. Please try again.', true);
+            }
+        });
+        
+        document.getElementById('recurringForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const message = document.getElementById('recurringMessage').value;
+            const type = document.getElementById('recurringType').value;
+            const time = document.getElementById('recurringTime').value;
+            const day = document.getElementById('recurringDay').value;
+            const date = document.getElementById('recurringDate').value;
+            
+            try {
+                const response = await fetch('/api/add-recurring', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message, type, time, day, date })
+                });
+                
+                if (response.ok) {
+                    showStatus('recurringStatus', '🔄 Recurring reminder set up successfully!');
+                    document.getElementById('recurringForm').reset();
+                } else {
+                    throw new Error('Failed to add recurring reminder');
+                }
+            } catch (error) {
+                showStatus('recurringStatus', '❌ Failed to add recurring reminder. Please try again.', true);
+            }
+        });
+        
+        // Set default date to today
+        document.getElementById('reminderDate').valueAsDate = new Date();
+    </script>
+</body>
+</html>
