@@ -14,7 +14,10 @@ import threading
 
 class NotificationHandler(BaseHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
-        self.script_dir = "/home/chris/ntfy-family"
+        # Get the parent directory of the web directory (ntfy-core)
+        import os
+        web_dir = os.path.dirname(__file__)
+        self.script_dir = os.path.dirname(web_dir)
         super().__init__(*args, **kwargs)
     
     def do_GET(self):
