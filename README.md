@@ -13,24 +13,32 @@ A distributed family notification system using your **Beelink home server** as t
 │   YOUR LAPTOP   │    │  BEELINK SERVER │    │  FAMILY PHONES  │
 │                 │    │  192.168.1.185  │    │                 │
 │  Deploy & Manage│───▶│                 │───▶│  📱 Mom's Phone │
-│                 │    │  • Web Interface│    │  📱 Dad's Phone │
+│  Gmail API Setup│    │  • Web Interface│    │  📱 Dad's Phone │
 │                 │    │  • Cron Jobs    │    │  📱 Kid's Phone │
 │                 │    │  • Scripts      │    │  📱 Tablet      │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
-                              │
-                              ▼
-                       ┌─────────────────┐
-                       │    NTFY.SH      │
-                       │  Push Service   │
+                              │                        ▲
+                              ▼                        │
+                       ┌─────────────────┐             │
+                       │    NTFY.SH      │             │
+                       │  Push Service   │             │
+                       │                 │             │
+                       └─────────────────┘             │
+                              │                        │
+                              ▼                        │
+                       ┌─────────────────┐             │
+                       │   GMAIL API     │─────────────┘
+                       │ Email Delivery  │ 📧 Email Backup
                        │                 │
                        └─────────────────┘
 
 FLOW:
 1. Deploy scripts from laptop to server
 2. Server runs scheduled notifications
-3. Server sends to ntfy.sh
+3. Dual delivery: NTFY.sh (instant) + Gmail (backup)
 4. ntfy.sh pushes to all family devices
-5. Family can also send via web interface
+5. Gmail sends email notifications
+6. Family can send via web interface
 ```
 
 ## Why Beelink Server Architecture?
@@ -243,7 +251,7 @@ Core notification system using ntfy.sh for reliable push notifications:
 - [`DEPLOYMENT_STEPS.md`](ntfy-core/DEPLOYMENT_STEPS.md) - Step-by-step deployment guide
 - [`server_usage_guide.md`](ntfy-core/server_usage_guide.md) - Server usage instructions
 
-### 📧 **email-notifications/** - Email Functionality
+### 📧 **email-notifications/** - Email Functionality ✅ **WORKING**
 Gmail API-based email notifications for additional delivery options:
 - [`gmail_api_send.py`](email-notifications/gmail_api_send.py) - Single email sender using Gmail API
 - [`family_gmail_notify.py`](email-notifications/family_gmail_notify.py) - Family email notifications
@@ -251,6 +259,8 @@ Gmail API-based email notifications for additional delivery options:
 - [`setup_gmail_notifications.sh`](email-notifications/setup_gmail_notifications.sh) - Automated setup script
 - [`GMAIL_API_SETUP_GUIDE.md`](email-notifications/GMAIL_API_SETUP_GUIDE.md) - Complete Gmail API setup instructions
 - [`GMAIL_QUICK_REFERENCE.md`](email-notifications/GMAIL_QUICK_REFERENCE.md) - Quick reference for email commands
+
+**Status**: Email notifications are functional. Future enhancements: web UI integration, server deployment.
 
 ## Getting Started
 
