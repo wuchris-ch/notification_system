@@ -33,6 +33,7 @@ This guide will walk you through setting up email notifications using the offici
      - App name: `NTFY Family Notifications`
      - User support email: Your email
      - Developer contact: Your email
+   - **IMPORTANT**: In "Test users" section, add your own email address (chriswu.ca@gmail.com)
    - Click "Save and Continue" through all steps
 4. Back to "Create OAuth client ID":
    - Application type: "Desktop application"

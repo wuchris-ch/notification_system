@@ -10,7 +10,7 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 
-# Gmail API scope
+# Gmail API scope - only what we need
 SCOPES = ['https://www.googleapis.com/auth/gmail.send']
 
 def authenticate_gmail():
@@ -61,10 +61,9 @@ def send_email_gmail_api(to_email, subject, message_text, from_email=None):
         if not service:
             return False
         
-        # Get user's email if not provided
+        # Use a default from email if not provided
         if not from_email:
-            profile = service.users().getProfile(userId='me').execute()
-            from_email = profile['emailAddress']
+            from_email = "me"  # Gmail API accepts "me" as the sender
         
         # Create message
         message = create_message(from_email, to_email, subject, message_text)
